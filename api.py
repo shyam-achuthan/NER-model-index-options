@@ -133,36 +133,18 @@ def load_model():
         import traceback
         logger.error(traceback.format_exc())
         return False
+
 """
-Debug version of extract_options_data function with extensive logging
-Replace in your api.py to diagnose model usage issues
+Improved extract_options_data function to handle problematic entity recognition
+Replace this in your api.py file
 """
 
 def extract_options_data(query: str) -> Dict[str, Any]:
-    """Extract structured data from query using SpaCy model"""
+    """Extract structured data from query using SpaCy model with improved index handling"""
     global spacy_model, index_mapper, option_mapper
-    
-    # Debug logs
-    logger.info("="*50)
-    logger.info(f"QUERY: {query}")
-    logger.info(f"MODEL LOADED: {spacy_model is not None}")
-    logger.info(f"INDEX MAPPER SIZE: {len(index_mapper)}")
-    logger.info(f"OPTION MAPPER SIZE: {len(option_mapper)}")
     
     # Process the query with SpaCy
     doc = spacy_model(query)
-    
-    # Debug: Print all tokens
-    logger.info("TOKENS:")
-    for i, token in enumerate(doc):
-        logger.info(f"  {i}: {token.text} (POS: {token.pos_}, DEP: {token.dep_})")
-    
-    # Debug: Check if NER model recognizes any entities
-    logger.info("NER ENTITIES FOUND:")
-    if len(doc.ents) == 0:
-        logger.info("  NO ENTITIES FOUND BY NER MODEL")
-    for ent in doc.ents:
-        logger.info(f"  {ent.text} -> {ent.label_}")
     
     # Initialize result
     result = {
@@ -171,93 +153,167 @@ def extract_options_data(query: str) -> Dict[str, Any]:
         "strikeType": None
     }
     
-    # Extract entities from NER model first
+    # Log the original query and tokenization for debugging
+    logger.info(f"QUERY: '{query}'")
+    tokens = [(token.text, token.idx) for token in doc]
+    logger.info(f"TOKENS: {tokens}")
+    
+    # Extract entities from NER model
+    entities_found = [(ent.text.lower(), ent.label_) for ent in doc.ents]
+    logger.info(f"NER entities found: {entities_found}")
+    
+    # Clean and process entities
     for ent in doc.ents:
         if ent.label_ == "INDEX":
+            # Extract just the index name without additional tokens
+            # This handles cases like "sensex sd" -> "sensex"
             index_text = ent.text.lower()
+            
+            # Check if this contains a known index as a substring
+            for known_index in index_mapper.keys():
+                if known_index in index_text:
+                    logger.info(f"Found known index '{known_index}' within '{index_text}'")
+                    index_text = known_index
+                    break
+            
+            # Map to standardized form
             if index_text in index_mapper:
                 result["index"] = index_mapper[index_text]
-                logger.info(f"INDEX FOUND via NER: {ent.text} -> {result['index']}")
+                logger.info(f"INDEX mapped: {index_text} -> {result['index']}")
             else:
+                # Try to find any known index within the text
+                logger.info(f"Index '{index_text}' not in mapper, trying fallbacks")
                 result["index"] = ent.text.upper()
-                logger.info(f"INDEX FOUND via NER (unmapped): {ent.text} -> {result['index']}")
                 
         elif ent.label_ == "STRIKE_PRICE":
             try:
                 result["strikePrice"] = int(ent.text)
-                logger.info(f"STRIKE_PRICE FOUND via NER: {ent.text} -> {result['strikePrice']}")
             except ValueError:
                 numbers = re.findall(r'\d+', ent.text)
                 if numbers:
                     result["strikePrice"] = int(''.join(numbers))
-                    logger.info(f"STRIKE_PRICE FOUND via NER (extracted): {ent.text} -> {result['strikePrice']}")
                     
         elif ent.label_ == "OPTION_TYPE":
             option_text = ent.text.lower()
             if option_text in option_mapper:
                 result["strikeType"] = option_mapper[option_text]
-                logger.info(f"OPTION_TYPE FOUND via NER: {ent.text} -> {result['strikeType']}")
             else:
                 result["strikeType"] = ent.text.upper()
-                logger.info(f"OPTION_TYPE FOUND via NER (unmapped): {ent.text} -> {result['strikeType']}")
     
-    # Log if we're using fallbacks (this indicates the model didn't work fully)
+    # Enhanced fallbacks for when NER fails to identify entities correctly
     if None in result.values():
-        logger.info("USING FALLBACKS - MODEL DID NOT IDENTIFY ALL ENTITIES")
+        logger.info("Using fallbacks for missing entities")
+        
+        # Query text in lowercase for easier processing
+        query_lower = query.lower()
+        
+        # 1. Fallback for index - find any known index by name
+        if result["index"] is None:
+            # First, check for specific indices with higher priority
+            priority_indices = {
+                "banknifty": "BANKNIFTY",
+                "bank nifty": "BANKNIFTY", 
+                "finnifty": "FINNIFTY",
+                "fin nifty": "FINNIFTY",
+                "midcap": "MIDCAPNIFTY",
+                "midcap nifty": "MIDCAPNIFTY",
+                "sensex": "SENSEX"
+            }
+            
+            # Check for more specific indices first
+            index_found = False
+            for index_name, canonical in priority_indices.items():
+                if index_name in query_lower:
+                    result["index"] = canonical
+                    logger.info(f"PRIORITY INDEX: Found index '{index_name}' -> '{canonical}'")
+                    index_found = True
+                    break
+            
+            # Only check for "nifty" if no other index was found
+            if not index_found:
+                for index_name, canonical in index_mapper.items():
+                    if index_name in query_lower:
+                        result["index"] = canonical
+                        logger.info(f"FALLBACK: Found index '{index_name}' -> '{canonical}'")
+                        break
+        
+        # 2. Fallback for strike price - find any 4-5 digit number
+        if result["strikePrice"] is None:
+            strike_match = re.search(r'\b(\d{4,5})\b', query)
+            if strike_match:
+                result["strikePrice"] = int(strike_match.group(1))
+                logger.info(f"FALLBACK: Found strike price {result['strikePrice']}")
+        
+        # 3. Fallback for option type
+        if result["strikeType"] is None:
+            # Check option mapper keys
+            for option_name, canonical in option_mapper.items():
+                if option_name in query_lower:
+                    result["strikeType"] = canonical
+                    logger.info(f"FALLBACK: Found option type '{option_name}' -> '{canonical}'")
+                    break
+            
+            # If still not found, check for common patterns
+            if result["strikeType"] is None:
+                if "call" in query_lower or " ce" in query_lower or "ce " in query_lower or " ce " in query_lower:
+                    result["strikeType"] = "CE"
+                    logger.info("FALLBACK: Found option type 'CE' via pattern")
+                elif "put" in query_lower or " pe" in query_lower or "pe " in query_lower or " pe " in query_lower:
+                    result["strikeType"] = "PE"
+                    logger.info("FALLBACK: Found option type 'PE' via pattern")
     
-    # Enhanced pattern matching fallback
-    query_lower = query.lower()
-    
-    # 1. Pattern matching for specific index names
-    if result["index"] is None:
-        for index_variant, index_name in index_mapper.items():
-            if index_variant in query_lower:
-                result["index"] = index_name
-                logger.info(f"INDEX FOUND via FALLBACK: {index_variant} -> {result['index']}")
-                break
-    
-    # 2. Pattern matching for strike prices (4-5 digit numbers)
-    if result["strikePrice"] is None:
-        strike_match = re.search(r'\b(\d{4,5})\b', query)
-        if strike_match:
-            result["strikePrice"] = int(strike_match.group(1))
-            logger.info(f"STRIKE_PRICE FOUND via FALLBACK: {strike_match.group(1)} -> {result['strikePrice']}")
-    
-    # 3. Pattern matching for option types
-    if result["strikeType"] is None:
-        # Check for full option type terms first
-        for option_variant, option_name in option_mapper.items():
-            if option_variant in query_lower:
-                result["strikeType"] = option_name
-                logger.info(f"OPTION_TYPE FOUND via FALLBACK: {option_variant} -> {result['strikeType']}")
+    # Special handling for known problematic patterns
+    if result["index"] and " " in result["index"]:
+        # Likely incorrectly joined with another word - use fallbacks
+        logger.info(f"Detected problematic index with space: {result['index']}")
+        
+        # Prioritize more specific indices over general ones
+        priority_indices = {
+            "banknifty": "BANKNIFTY",
+            "bank nifty": "BANKNIFTY", 
+            "finnifty": "FINNIFTY",
+            "fin nifty": "FINNIFTY",
+            "midcap": "MIDCAPNIFTY",
+            "midcap nifty": "MIDCAPNIFTY",
+            "sensex": "SENSEX"
+        }
+        
+        # Check for more specific indices first
+        index_found = False
+        for index_name, canonical in priority_indices.items():
+            if index_name in query_lower:
+                result["index"] = canonical
+                logger.info(f"CLEANUP: Fixed index to '{canonical}'")
+                index_found = True
                 break
                 
-        # If still not found, try these common patterns
-        if result["strikeType"] is None:
-            if "call" in query_lower or " ce" in query_lower or "ce " in query_lower:
-                result["strikeType"] = "CE"
-                logger.info(f"OPTION_TYPE FOUND via PATTERN: CE")
-            elif "put" in query_lower or " pe" in query_lower or "pe " in query_lower:
-                result["strikeType"] = "PE"
-                logger.info(f"OPTION_TYPE FOUND via PATTERN: PE")
+        # Only if no specific index was found, try the general indices
+        if not index_found:
+            for index_name, canonical in index_mapper.items():
+                if index_name in query_lower:
+                    result["index"] = canonical
+                    logger.info(f"CLEANUP: Fixed index to '{canonical}'")
+                    break
     
-    # 4. Specific pattern matching for your exact query case
-    if query_lower == "what is the trend of nifty 23600 call option" or similar_pattern(query_lower):
-        # Force the correct values for this specific pattern
-        orig_result = result.copy()
-        result["index"] = "NIFTY50"
-        result["strikePrice"] = 23600
-        result["strikeType"] = "CE"
-        logger.info(f"HARDCODED PATTERN MATCH: {orig_result} -> {result}")
+    # Final check - if the query contains "banknifty" or "finnifty" but the result is NIFTY50, correct it
+    query_lower = query.lower()
+    if result["index"] == "NIFTY50":
+        if "banknifty" in query_lower or "bank nifty" in query_lower:
+            result["index"] = "BANKNIFTY"
+            logger.info("FINAL CHECK: Corrected NIFTY50 to BANKNIFTY")
+        elif "finnifty" in query_lower or "fin nifty" in query_lower:
+            result["index"] = "FINNIFTY"
+            logger.info("FINAL CHECK: Corrected NIFTY50 to FINNIFTY")
+        elif "midcap" in query_lower:
+            result["index"] = "MIDCAPNIFTY"
+            logger.info("FINAL CHECK: Corrected NIFTY50 to MIDCAPNIFTY")
+        elif "sensex" in query_lower:
+            result["index"] = "SENSEX"
+            logger.info("FINAL CHECK: Corrected NIFTY50 to SENSEX")
     
-    # Log final result and how we got there
-    logger.info("FINAL RESULT:")
-    logger.info(f"  INDEX: {result['index']}")
-    logger.info(f"  STRIKE_PRICE: {result['strikePrice']}")
-    logger.info(f"  OPTION_TYPE: {result['strikeType']}")
-    logger.info("="*50)
-    
+    logger.info(f"Final result: {result}")
     return result
+
 def similar_pattern(query: str) -> bool:
     """Check if query matches a pattern like 'what is the trend of [index] [strike] [option]'"""
     # Common patterns that should work with specific format

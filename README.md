@@ -153,10 +153,10 @@ The model can be trained with custom data by:
 
 The API recognizes three entity types:
 
-1. **INDEX**: Stock indices like NIFTY50, BANKNIFTY
+1. **INDEX**: Stock indices like NIFTY50, BANKNIFTY, SENSEX
 
-   - Variations: "nifty", "bank nifty", "finnifty", "midcap nifty"
-   - Standardized to: "NIFTY50", "BANKNIFTY", "FINNIFTY", "MIDCAPNIFTY"
+   - Variations: "nifty", "bank nifty", "finnifty", "midcap nifty", "sensex", "bse sensex"
+   - Standardized to: "NIFTY50", "BANKNIFTY", "FINNIFTY", "MIDCAPNIFTY", "SENSEX"
 
 2. **STRIKE_PRICE**: Numeric option strike prices
 

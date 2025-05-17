@@ -138,15 +138,20 @@ def create_entity_mappers(index_variations, option_variations):
 Improvements to train_model.py to enhance NER for challenging patterns
 """
 
+"""
+Improvements to train_model.py to enhance NER for challenging patterns
+"""
+
 def create_training_data():
     """Generate synthetic training data with more emphasis on challenging patterns"""
     
-    # Define standard variations for index names
+    # Define standard variations for index names - ADDED SENSEX
     index_variations = {
         "NIFTY50": ["nifty", "nifty 50", "nifty50", "nifty index", "nifty 50 index"],
         "BANKNIFTY": ["bank nifty", "banknifty", "nifty bank", "banking index", "bank index"],
         "FINNIFTY": ["fin nifty", "finnifty", "nifty fin", "financial index", "financial nifty"],
-        "MIDCAPNIFTY": ["midcap nifty", "nifty midcap", "midcap", "midcap index", "mid cap nifty"]
+        "MIDCAPNIFTY": ["midcap nifty", "nifty midcap", "midcap", "midcap index", "mid cap nifty"],
+        "SENSEX": ["sensex", "bse sensex", "sensex index", "bse 30", "sensex 30"]
     }
     
     # Define standard variations for option types
@@ -381,7 +386,6 @@ def train_ner_model(training_data, output_dir, n_iter=50):  # Increased iteratio
     logger.info(f"Model saved to {output_dir}")
     
     return nlp
- 
  
 def main():
     """Main function to train and save the model"""
