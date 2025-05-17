@@ -2,8 +2,6 @@
 
 A containerized solution for extracting structured information from natural language options trading queries using Named Entity Recognition (NER).
 
-![Options NER Demo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzM2N2c1MHZzY3ZiOHpkZjQxNDdtc2pnNndqbXQ5b3Zoc29lc3lsYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0ErWnkLjegNB5LlC/giphy.gif)
-
 ## 📋 Overview
 
 The Options Trading NER API extracts key information from options trading queries and returns it in a structured format. It can identify:
