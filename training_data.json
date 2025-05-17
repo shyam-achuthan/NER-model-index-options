@@ -1,0 +1,322 @@
+[
+  {
+    "text": "What's the price of nifty 18500 call?",
+    "entities": [
+      [20, 25, "INDEX"],
+      [26, 31, "STRIKE_PRICE"],
+      [32, 36, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "How is bank nifty 40000 pe doing today?",
+    "entities": [
+      [7, 17, "INDEX"],
+      [18, 23, "STRIKE_PRICE"],
+      [24, 26, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Give me information on finnifty put option 20000",
+    "entities": [
+      [20, 28, "INDEX"],
+      [29, 39, "OPTION_TYPE"],
+      [40, 45, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "Should I buy midcap nifty 30000 CE?",
+    "entities": [
+      [13, 25, "INDEX"],
+      [26, 31, "STRIKE_PRICE"],
+      [32, 34, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "nifty 17500 pe premium",
+    "entities": [
+      [0, 5, "INDEX"],
+      [6, 11, "STRIKE_PRICE"],
+      [12, 14, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Current movement in banknifty 36000 call options",
+    "entities": [
+      [19, 28, "INDEX"],
+      [29, 34, "STRIKE_PRICE"],
+      [35, 46, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "What's the outlook for finnifty 21000 puts?",
+    "entities": [
+      [22, 30, "INDEX"],
+      [31, 36, "STRIKE_PRICE"],
+      [37, 41, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Should I exit my nifty 19500 ce position?",
+    "entities": [
+      [17, 22, "INDEX"],
+      [23, 28, "STRIKE_PRICE"],
+      [29, 31, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Analysis of midcap nifty put 32000",
+    "entities": [
+      [12, 24, "INDEX"],
+      [25, 28, "OPTION_TYPE"],
+      [29, 34, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "What's happening with bank nifty 38000 calls today?",
+    "entities": [
+      [21, 31, "INDEX"],
+      [32, 37, "STRIKE_PRICE"],
+      [38, 43, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "what is the trend of nifty 23600 call option",
+    "entities": [
+      [18, 23, "INDEX"],
+      [24, 29, "STRIKE_PRICE"],
+      [30, 41, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Should I buy nifty 22000 call option contracts?",
+    "entities": [
+      [13, 18, "INDEX"],
+      [19, 24, "STRIKE_PRICE"],
+      [25, 36, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "nifty 25000 put option analysis",
+    "entities": [
+      [0, 5, "INDEX"],
+      [6, 11, "STRIKE_PRICE"],
+      [12, 22, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "premium of finnifty call option 19800",
+    "entities": [
+      [11, 19, "INDEX"],
+      [20, 31, "OPTION_TYPE"],
+      [32, 37, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "what will happen to banknifty 42500 call",
+    "entities": [
+      [19, 28, "INDEX"],
+      [29, 34, "STRIKE_PRICE"],
+      [35, 39, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "i am holding nifty ce option for 25600 should i hold or sell",
+    "entities": [
+      [13, 18, "INDEX"],
+      [19, 21, "OPTION_TYPE"],
+      [33, 38, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "Is it good time to buy nifty 24000 pe?",
+    "entities": [
+      [21, 26, "INDEX"],
+      [27, 32, "STRIKE_PRICE"],
+      [33, 35, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "What's your view on banknifty 43500 puts?",
+    "entities": [
+      [19, 28, "INDEX"],
+      [29, 34, "STRIKE_PRICE"],
+      [35, 39, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Analysis for nifty ce 26000 contract",
+    "entities": [
+      [13, 18, "INDEX"],
+      [19, 21, "OPTION_TYPE"],
+      [22, 27, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "Should I sell my midcap nifty 28000 call options now?",
+    "entities": [
+      [17, 29, "INDEX"],
+      [30, 35, "STRIKE_PRICE"],
+      [36, 40, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Target price for finnifty 22500 pe contract?",
+    "entities": [
+      [17, 25, "INDEX"],
+      [26, 31, "STRIKE_PRICE"],
+      [32, 34, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Nifty ce 27000 - what's the premium?",
+    "entities": [
+      [0, 5, "INDEX"],
+      [6, 8, "OPTION_TYPE"],
+      [9, 14, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "I've bought bank nifty put options at 41000",
+    "entities": [
+      [12, 22, "INDEX"],
+      [23, 26, "OPTION_TYPE"],
+      [38, 43, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "Strategy for finnifty 23000 call?",
+    "entities": [
+      [13, 21, "INDEX"],
+      [22, 27, "STRIKE_PRICE"],
+      [28, 32, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Getting out of midcap 30500 put, thoughts?",
+    "entities": [
+      [15, 21, "INDEX"],
+      [22, 27, "STRIKE_PRICE"],
+      [28, 31, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Invested in nifty pe 23500 last week",
+    "entities": [
+      [13, 18, "INDEX"],
+      [19, 21, "OPTION_TYPE"],
+      [22, 27, "STRIKE_PRICE"]
+    ]
+  },
+  {
+    "text": "Will banknifty 44000 call be profitable tomorrow?",
+    "entities": [
+      [5, 14, "INDEX"],
+      [15, 20, "STRIKE_PRICE"],
+      [21, 25, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Thinking of buying nifty 26500 put option",
+    "entities": [
+      [19, 24, "INDEX"],
+      [25, 30, "STRIKE_PRICE"],
+      [31, 41, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "How much premium for finnifty 24000 ce?",
+    "entities": [
+      [22, 30, "INDEX"],
+      [31, 36, "STRIKE_PRICE"],
+      [37, 39, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "Reviewing my midcap nifty 29000 pe position",
+    "entities": [
+      [13, 25, "INDEX"],
+      [26, 31, "STRIKE_PRICE"],
+      [32, 34, "OPTION_TYPE"]
+    ]
+  },
+  {
+    "text": "i am holding 25600 ce of nifty should i hold or sell",
+    "entities": [
+      [13, 18, "STRIKE_PRICE"],
+      [19, 21, "OPTION_TYPE"],
+      [25, 30, "INDEX"]
+    ]
+  },
+  {
+    "text": "holding 19800 ce of nifty for a week now",
+    "entities": [
+      [8, 13, "STRIKE_PRICE"],
+      [14, 16, "OPTION_TYPE"],
+      [20, 25, "INDEX"]
+    ]
+  },
+  {
+    "text": "i am holding 22500 put of bank nifty since yesterday",
+    "entities": [
+      [13, 18, "STRIKE_PRICE"],
+      [19, 22, "OPTION_TYPE"],
+      [26, 36, "INDEX"]
+    ]
+  },
+  {
+    "text": "holding 30000 ce of midcap nifty at a loss",
+    "entities": [
+      [8, 13, "STRIKE_PRICE"],
+      [14, 16, "OPTION_TYPE"],
+      [20, 32, "INDEX"]
+    ]
+  },
+  {
+    "text": "my portfolio has 27500 pe of finnifty",
+    "entities": [
+      [16, 21, "STRIKE_PRICE"],
+      [22, 24, "OPTION_TYPE"],
+      [28, 36, "INDEX"]
+    ]
+  },
+  {
+    "text": "currently holding 18500 call option of nifty",
+    "entities": [
+      [18, 23, "STRIKE_PRICE"],
+      [24, 35, "OPTION_TYPE"],
+      [39, 44, "INDEX"]
+    ]
+  },
+  {
+    "text": "i have 42000 put options of banknifty in my account",
+    "entities": [
+      [7, 12, "STRIKE_PRICE"],
+      [13, 24, "OPTION_TYPE"],
+      [28, 37, "INDEX"]
+    ]
+  },
+  {
+    "text": "trading with 23000 ce of finnifty this week",
+    "entities": [
+      [14, 19, "STRIKE_PRICE"],
+      [20, 22, "OPTION_TYPE"],
+      [26, 34, "INDEX"]
+    ]
+  },
+  {
+    "text": "bought 31500 pe of midcap at market open",
+    "entities": [
+      [7, 12, "STRIKE_PRICE"],
+      [13, 15, "OPTION_TYPE"],
+      [19, 25, "INDEX"]
+    ]
+  },
+  {
+    "text": "my 19000 call option of nifty 50 is in profit",
+    "entities": [
+      [3, 8, "STRIKE_PRICE"],
+      [9, 20, "OPTION_TYPE"],
+      [24, 32, "INDEX"]
+    ]
+  }
+]
